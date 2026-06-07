@@ -1,13 +1,1038 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>FIT2179 Studio 4 HTML/Git Exercise</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Does Your Degree Actually Get You?</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Vega-Lite -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+    <style>
+        :root {
+            --bg:       #f8f9fa;
+            --text:     #333333;
+            --muted:    #666666;
+            --blue:     #2166ac;
+            --blue-lt:  #74add1;
+            --red:      #d73027;
+            --border:   #dddddd;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        header {
+            border-top: 4px solid var(--blue);
+            padding-top: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            line-height: 1.2;
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        header p.subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        p.intro {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text);
+            max-width: 720px;
+            margin-bottom: 2.5rem;
+            border-left: 3px solid var(--blue);
+            padding-left: 1rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .section p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            max-width: 680px;
+        }
+
+        .chart-container {
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            width: 100%;
+        }
+
+        .chart-container.centered {
+            display: flex;
+            justify-content: center;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .closing {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            border-top: 3px solid var(--blue);
+            max-width: 720px;
+        }
+
+        .closing p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text);
+        }
+    </style>
 </head>
 <body>
-    <h1>This is a heading</h1>
-    <p>
-        This is a paragraph. Changes seem to go live after saving. But no reload required like before?
-        This is a test modification for newlines as well as commits.
+
+<header>
+    <h1>What Does Your Degree Actually Get You?</h1>
+    <p class="subtitle">Graduate employment outcomes across Australian fields of study — QILT 2024 &amp; ABS 2025</p>
+</header>
+
+<main>
+
+    <p class="intro">
+        Choosing a degree is one of the biggest decisions you'll make — and one of 
+        the most expensive. Tuition, lost income, years of your life. Most people 
+        make that decision based on interest, reputation, or gut feel. This 
+        visualisation uses the latest Australian graduate data to show what 
+        different degrees actually deliver: who finds work, how quickly, how much 
+        they earn, and where the gaps are. The data won't make the decision for 
+        you — but it might change what questions you ask.
     </p>
+
+    <section class="section">
+        <h2>Which degrees lead to full-time work — and what do they pay?</h2>
+        <p>
+            One year after graduating, the difference between fields is stark. 
+            Rehabilitation, Pharmacy and Medicine graduates find full-time work 
+            at rates above 90% — while fewer than half of Creative Arts graduates 
+            are in full-time employment. Use the dropdown to filter by discipline 
+            group, then click any bar to see where that field sits in the bubble 
+            plot on the right.
+        </p>
+        <p>
+            The bubble plot shows three things at once: how likely graduates are to 
+            find full-time work (left–right), how much they typically earn (up–down), 
+            and how many employed graduates are working part-time (bubble size). 
+            Note that bubble size and left–right position measure different things — 
+            a field can have a strong full-time employment rate while also having a 
+            large bubble, because many of those who are employed chose part-time. 
+            Nursing is a good example: strong employment rate, but a large bubble 
+            because shift work and part-time arrangements are common in the sector. 
+            Hold Shift to select multiple fields. Double-click to deselect.
+        </p>
+        <div id="chartLinked" class="chart-container"></div>
+    </section>
+
+
+    <section class="section">
+        <h2>How do fields stack up across every measure at once?</h2>
+        <p>
+            Each cell shows how a field performs relative to all others on four key 
+            outcomes — employment rate, median salary, part-time rate, and gender 
+            pay gap. Darker blue means better performance. Part-time rate is shown 
+            inverted, so darker still means fewer graduates working part-time. 
+            Fields like Medicine and Rehabilitation sit dark across most columns. 
+            Creative Arts and Communications sit consistently light. Hover over any 
+            cell for the exact figures.
+        </p>
+        <div id="chartHeatmap" class="chart-container"></div>
+    </section>
+
+    
+
+    <section class="section">
+        <h2>Part-time work: choice or compromise?</h2>
+        <p>
+            Not all part-time work means things went wrong. This chart splits 
+            part-time employment into two groups: graduates who are satisfied with 
+            their hours (blue) and those actively seeking more work (red dots). 
+            Creative Arts and Psychology graduates have the highest part-time rates 
+            overall — but a significant share of that is involuntary. In contrast, 
+            fields like Nursing have moderate part-time rates where most graduates 
+            appear to have chosen those arrangements.
+        </p>
+        <div id="chart4" class="chart-container"></div>
+    </section>
+
+    <section class="section">
+        <h2>Is the graduate job market getting better or worse?</h2>
+        <p>
+            Looking at the past three years, the picture is mixed. Full-time 
+            employment rates peaked in 2023 and dipped in 2024 — suggesting the 
+            post-pandemic jobs surge may be easing. But median salaries have risen 
+            steadily every year, meaning graduates who do find full-time work are 
+            earning more than their predecessors. Whether that trade-off continues 
+            is worth watching.
+        </p>
+        <div id="chart5" class="chart-container"></div>
+    </section>
+
+    <section class="section">
+        <h2>Which fields saw the biggest salary jump in the last year?</h2>
+        <p>
+            Each line connects a field's median salary in 2023 (left) to 2024 
+            (right). Steeper lines mean bigger change. Architecture and Dentistry 
+            stand out in blue — both saw gains of more than $8,000 in a single year. 
+            Tourism and Hospitality is the only field where median salary fell. 
+            Most fields cluster in a narrow band of modest growth. Hover over any 
+            line to see exact figures.
+        </p>
+        <div id="chartSlope" class="chart-container centered"></div>
+    </section>
+
+    <section class="section">
+        <h2>The gender pay gap looks different depending on what you study</h2>
+        <p>
+            Across almost every field, male graduates out-earn female graduates one 
+            year after finishing their degree. Tourism and Hospitality and 
+            Architecture show the largest gaps. Communications is the notable 
+            exception — one of the few fields where female graduates report higher 
+            median salaries than their male counterparts. These are median figures 
+            for full-time workers, so the gap reflects starting salaries rather than 
+            lifetime earnings.
+        </p>
+        <div id="chart7" class="chart-container"></div>
+    </section>
+
+    <section class="section">
+        <h2>Where you live affects how qualified your neighbours are — but maybe not you</h2>
+        <p>
+            The ACT stands out clearly — Canberra's concentration of public service, 
+            research and policy roles means a higher share of working-age residents 
+            hold a bachelor degree or above than anywhere else in Australia. 
+            Tasmania, Queensland and Western Australia trail the national average. 
+            This reflects the existing workforce rather than graduate outcomes 
+            directly, but it gives a sense of where degree-holders tend to end up 
+            working — and where competition for graduate roles may be lower.
+        </p>
+        <div id="chart8" class="chart-container"></div>
+    </section>
+
+    <section class="section">
+        <h2>Does it matter how far you go with your education?</h2>
+        <p>
+            Broadly, yes — but perhaps less than you'd expect once you're past Year 
+            12. Postgraduate holders have the highest employment rates, but the gap 
+            between a bachelor degree and a certificate narrows considerably. The 
+            real cliff is below Year 12: employment rates drop sharply for those who 
+            didn't complete secondary school. For most people reading this, the 
+            question isn't whether to study — it's what and how far.
+        </p>
+        <div id="chart9" class="chart-container"></div>
+    </section>
+
+    <section class="section">
+        <h2>When graduates end up in the wrong job, why?</h2>
+        <p>
+            Among graduates working in roles below their qualification level, the 
+            single biggest reason is "entry level job / career stepping stone" — 
+            suggesting that for many, underemployment is a temporary phase rather 
+            than a dead end. Lack of suitable local jobs is the most common 
+            structural barrier. Together, these two reasons account for nearly a 
+            third of all responses — pointing to both patience and geography as 
+            factors graduates can actually act on.
+        </p>
+        <div id="chart10" class="chart-container"></div>
+    </section>
+
+    <div class="closing">
+        <p>
+            No dataset tells the full story. These figures reflect outcomes one 
+            year after graduation — careers look different at five years, ten 
+            years, or after a postgraduate qualification. They also reflect 
+            medians: half of graduates in every field earn more than the figure 
+            shown, and half earn less. What the data does show clearly is that 
+            field of study matters more than most people assume — and that the 
+            gap between the best and worst outcomes is wide enough to be worth 
+            understanding before you enrol.
+        </p>
+    </div>
+
+</main>
+
+<footer>
+    <p>
+        <strong>Data sources:</strong> 
+        Graduate Outcomes Survey 2024, Quality Indicators for Learning and Teaching (QILT), 
+        Australian Government Department of Education. 
+        Available at <a href="https://www.qilt.edu.au/about-this-site/downloads" target="_blank">qilt.edu.au</a>. 
+        Undergraduate completers surveyed approximately one year after graduation.
+    </p>
+    <p>
+        ABS Education and Work, Australia, May 2025, Australian Bureau of Statistics. 
+        Available at <a href="https://www.abs.gov.au/statistics/people/education/education-and-work-australia/latest-release" target="_blank">abs.gov.au</a>.
+    </p>
+    <p>
+        Both datasets are publicly available under open licence. 
+        Data pre-aggregated from source files; no values have been modified or fabricated.
+    </p>
+    <p><strong>Author:</strong> Mitchell Przybylowski &mdash; June 7, 2026 &mdash; Monash University, FIT2179 Data Visualisation</p>
+    <p>
+        <strong>AI Acknowledgement:</strong> I used Claude (Sonnet 4.6 model) to automate data preparation/aggregation
+        and assist in implementing the charts in VegaLite (including debugging display issues). I also 
+        used this model to assist in writing the chart section descriptions, as well as articulating 
+        the design choices I'd made (such as with typesetting) in a clearer and more concise way.
+    </p>
+    <p>
+        <strong>Chart specifications:</strong>
+        <a href="specs/chart_linked.json" target="_blank">Linked views</a> &middot;
+        <a href="specs/chart_heatmap.json" target="_blank">Heatmap</a> &middot;
+        <a href="specs/chart_parttime.json" target="_blank">Part-time</a> &middot;
+        <a href="specs/chart_trends.json" target="_blank">Trends</a> &middot;
+        <a href="specs/chart_slope.json" target="_blank">Slope graph</a> &middot;
+        <a href="specs/chart_paygap.json" target="_blank">Gender pay gap</a> &middot;
+        <a href="specs/chart_map.json" target="_blank">Map</a> &middot;
+        <a href="specs/chart_qualification.json" target="_blank">Qualification</a> &middot;
+        <a href="specs/chart_underemployment.json" target="_blank">Underemployment</a>
+    </p>
+</footer>
+
+<script>
+    const chartLinkedSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "params": [
+            {
+                "name": "groupFilter",
+                "value": "All",
+                "bind": {
+                    "input": "select",
+                    "options": ["All", "Health", "Engineering & Technology", 
+                                "Business & Law", "Arts & Humanities", 
+                                "Science & Environment", "Education"],
+                    "labels": ["All fields", "Health", "Engineering & Technology",
+                            "Business & Law", "Arts & Humanities",
+                            "Science & Environment", "Education"],
+                    "name": "Filter by discipline: "
+                }
+            }
+        ],
+        "hconcat": [
+            {
+                "width": 230,
+                "height": 480,
+                "data": { "url": "chart1_employment_by_field.csv" },
+                "params": [
+                    {
+                        "name": "fieldSelect",
+                        "select": {
+                            "type": "point",
+                            "fields": ["field"]
+                        }
+                    }
+                ],
+                "transform": [
+                    { "filter": "groupFilter == 'All' || datum.group == groupFilter" }
+                ],
+                "mark": {
+                    "type": "bar",
+                    "cornerRadiusEnd": 3
+                },
+                "encoding": {
+                    "y": {
+                        "field": "field",
+                        "type": "nominal",
+                        "sort": "-x",
+                        "title": null,
+                        "axis": { "labelFontSize": 11 }
+                    },
+                    "x": {
+                        "field": "fte_2024",
+                        "type": "quantitative",
+                        "title": "Full-time employment rate (%)",
+                        "scale": { "domain": [0, 100] },
+                        "axis": { "labelFontSize": 10, "titleFontSize": 11 }
+                    },
+                    "color": {
+                        "condition": {
+                            "param": "fieldSelect",
+                            "value": "#2166ac"
+                        },
+                        "value": "#cccccc"
+                    },
+                    "tooltip": [
+                        { "field": "field",    "title": "Field of study" },
+                        { "field": "group",    "title": "Discipline group" },
+                        { "field": "fte_2024", "title": "Full-time employed (%)", "format": ".1f" }
+                    ]
+                }
+            },
+            {
+                "width": 230,
+                "height": 480,
+                "data": { "url": "chart3_scatter_salary_vs_employment-v2.csv" },
+                "layer": [
+                    {
+                        "mark": {
+                            "type": "point",
+                            "filled": true,
+                            "opacity": 0.85
+                        },
+                        "encoding": {
+                            "x": {
+                                "field": "employment_rate",
+                                "type": "quantitative",
+                                "title": "Full-time employment rate (%)",
+                                "scale": { "domain": [40, 100] },
+                                "axis": { "labelFontSize": 10, "titleFontSize": 11 }
+                            },
+                            "y": {
+                                "field": "median_salary",
+                                "type": "quantitative",
+                                "title": "Median annual salary ($)",
+                                "scale": { "domain": [55000, 95000] },
+                                "axis": {
+                                    "labelFontSize": 10,
+                                    "titleFontSize": 11,
+                                    "format": "$,.0f"
+                                }
+                            },
+                            "size": {
+                                "field": "part_time_pct",
+                                "type": "quantitative",
+                                "title": "Part-time rate (%)",
+                                "scale": { "range": [50, 1200] },
+                                "legend": {
+                                    "title": "Part-time rate (%)",
+                                    "titleFontSize": 10,
+                                    "labelFontSize": 9,
+                                    "orient": "none",
+                                    "legendX": 570,
+                                    "legendY": 150
+                                }
+                            },
+                            "color": {
+                                "condition": {
+                                    "param": "fieldSelect",
+                                    "value": "#2166ac"
+                                },
+                                "value": "#cccccc"
+                            },
+                            "tooltip": [
+                                { "field": "field",          "title": "Field of study" },
+                                { "field": "employment_rate", "title": "Full-time employed (%)", "format": ".1f" },
+                                { "field": "median_salary",   "title": "Median salary ($)", "format": "$,.0f" },
+                                { "field": "part_time_pct",   "title": "Part-time rate (%)", "format": ".1f" }
+                            ]
+                        }
+                    },
+                    {
+                        "mark": {
+                            "type": "text",
+                            "dy": -14,
+                            "fontSize": 10,
+                            "color": "#333333",
+                            "fontWeight": "bold"
+                        },
+                        "transform": [
+                            { "filter": { "param": "fieldSelect", "empty": false } }
+                        ],
+                        "encoding": {
+                            "x": {
+                                "field": "employment_rate",
+                                "type": "quantitative"
+                            },
+                            "y": {
+                                "field": "median_salary",
+                                "type": "quantitative"
+                            },
+                            "text": {
+                                "field": "field",
+                                "type": "nominal"
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    };
+
+    vegaEmbed('#chartLinked', chartLinkedSpec, { actions: false });
+
+    
+
+    const chartHeatmapSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Heatmap of normalised graduate outcomes by field of study, 2024",
+        "data": { "url": "chart_heatmap.csv" },
+        "width": 620,
+        "height": 420,
+        "padding": { "left": 20 },
+        "mark": { "type": "rect" },
+        "encoding": {
+            "y": {
+                "field": "field",
+                "type": "nominal",
+                "sort": { "field": "norm_value", "op": "mean", "order": "descending" },
+                "title": null,
+                "axis": { "labelFontSize": 11 }
+            },
+            "x": {
+                "field": "metric",
+                "type": "nominal",
+                "title": null,
+                "axis": {
+                    "labelFontSize": 11,
+                    "labelAngle": -20
+                },
+                "sort": ["Employment rate", "Median salary",
+                        "Part-time rate (inv.)", "Gender pay gap"]
+            },
+            "color": {
+                "field": "norm_value",
+                "type": "quantitative",
+                "title": "Score (0–1)",
+                "scale": {
+                    "domain": [0, 1],
+                    "scheme": "blues"
+                },
+                "legend": {
+                    "orient": "bottom",
+                    "titleFontSize": 11,
+                    "labelFontSize": 10,
+                    "gradientLength": 200
+                }
+            },
+            "tooltip": [
+                { "field": "field",      "title": "Field of study" },
+                { "field": "metric",     "title": "Metric" },
+                { "field": "raw_value",  "title": "Raw value", "format": ",.0f" },
+                { "field": "norm_value", "title": "Normalised score", "format": ".2f" }
+            ]
+        }
+    };
+
+    vegaEmbed('#chartHeatmap', chartHeatmapSpec, { actions: false });
+
+
+    const chart4spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Part-time employment breakdown by field of study, 2024",
+        "data": { "url": "chart4_parttime_by_field.csv" },
+        "width": 560,
+        "height": 420,
+        "padding": { "left": 20 },
+        "transform": [
+            {
+                "fold": ["seeking_more_pct", "satisfied_pt_pct"],
+                "as": ["status", "percentage"]
+            }
+        ],
+        "mark": {
+            "type": "bar",
+            "cornerRadiusEnd": 3
+        },
+        "encoding": {
+            "y": {
+                "field": "field",
+                "type": "nominal",
+                "sort": { "field": "part_time_pct", "order": "descending" },
+                "title": null,
+                "axis": { "labelFontSize": 12 }
+            },
+            "x": {
+                "field": "percentage",
+                "type": "quantitative",
+                "title": "% of employed graduates working part-time",
+                "axis": { "labelFontSize": 11, "titleFontSize": 12 }
+            },
+            "color": {
+                "field": "status",
+                "type": "nominal",
+                "scale": {
+                    "domain": ["seeking_more_pct", "satisfied_pt_pct"],
+                    "range":  ["#d73027", "#74add1"]
+                },
+                "legend": {
+                    "title": null,
+                    "labelExpr": "datum.value === 'seeking_more_pct' ? 'Seeking more hours' : 'Satisfied with part-time'",
+                    "orient": "bottom"
+                }
+            },
+            "tooltip": [
+                { "field": "field",       "title": "Field of study" },
+                { "field": "status",      "title": "Status",
+                "condition": null },
+                { "field": "percentage",  "title": "% of employed", "format": ".1f" }
+            ]
+        }
+    };
+
+    vegaEmbed('#chart4', chart4spec, { actions: false });
+
+    const chart5spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Graduate employment rate and median salary trends 2022-2024",
+        "data": { "url": "chart5_trends.csv" },
+        "width": 620,
+        "height": 320,
+        "padding": { "left": 20 },
+        "resolve": { "scale": { "y": "independent" } },
+        "layer": [
+            {
+                "mark": {
+                    "type": "line",
+                    "point": { "filled": true, "size": 80 },
+                    "strokeWidth": 2.5,
+                    "color": "#2166ac"
+                },
+                "encoding": {
+                    "x": {
+                        "field": "year_label",
+                        "type": "ordinal",
+                        "title": "Survey year",
+                        "axis": { "labelFontSize": 12, "titleFontSize": 12 }
+                    },
+                    "y": {
+                        "field": "fte",
+                        "type": "quantitative",
+                        "title": "Full-time employment rate (%)",
+                        "scale": { "domain": [70, 85] },
+                        "axis": {
+                            "labelFontSize": 11,
+                            "titleFontSize": 11,
+                            "titleColor": "#2166ac",
+                            "format": ".1f",
+                            "tickCount": 4
+                        }
+                    },
+                    "tooltip": [
+                        { "field": "year_label", "title": "Year" },
+                        { "field": "fte",        "title": "Full-time employed (%)", "format": ".1f" }
+                    ]
+                }
+            },
+            {
+                "mark": {
+                    "type": "line",
+                    "point": { "filled": true, "size": 80 },
+                    "strokeWidth": 2.5,
+                    "color": "#d73027",
+                    "strokeDash": [4, 2]
+                },
+                "encoding": {
+                    "x": {
+                        "field": "year_label",
+                        "type": "ordinal"
+                    },
+                    "y": {
+                        "field": "median_salary",
+                        "type": "quantitative",
+                        "title": "Median salary ($)",
+                        "scale": { "domain": [60000, 80000] },
+                        "axis": {
+                            "labelFontSize": 11,
+                            "titleFontSize": 11,
+                            "titleColor": "#d73027",
+                            "format": "$,.0f",
+                            "tickCount": 4
+                        }
+                    },
+                    "tooltip": [
+                        { "field": "year_label",    "title": "Year" },
+                        { "field": "median_salary", "title": "Median salary ($)", "format": "$," }
+                    ]
+                }
+            }
+        ]
+    };
+
+    vegaEmbed('#chart5', chart5spec, { actions: false });
+
+
+    const chartSlopeSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Slope graph: median graduate salary by field of study, 2023 vs 2024",
+        "data": { "url": "chart_slope.csv" },
+        "width": 300,
+        "height": 520,
+        "padding": { "left": 20 },
+        "layer": [
+            {
+                "params": [{
+                    "name": "slopeHoverInteraction",
+                    "select": {
+                        "type": "point",
+                        "on": "mouseover",
+                        "fields": ["field"]
+                    }
+                }],
+                "mark": {
+                    "type": "line",
+                    "strokeWidth": 2
+                },
+                "encoding": {
+                    "x": {
+                        "field": "year",
+                        "type": "ordinal",
+                        "axis": {
+                            "labelFontSize": 13,
+                            "titleFontSize": 0,
+                            "domain": false,
+                            "ticks": false
+                        }
+                    },
+                    "y": {
+                        "field": "salary",
+                        "type": "quantitative",
+                        "title": "Median annual salary ($)",
+                        "scale": { "domain": [50000, 110000] },
+                        "axis": {
+                            "labelFontSize": 11,
+                            "titleFontSize": 12,
+                            "format": "$,.0f"
+                        }
+                    },
+                    "detail": { "field": "field", "type": "nominal" },
+                    "color": {
+                        "condition": {
+                            "test": "datum.change > 5000",
+                            "value": "#2166ac"
+                        },
+                        "value": "#aaaaaa"
+                    },
+                    "opacity": {
+                        "condition": {
+                            "param": "slopeHoverInteraction",
+                            "empty": false,
+                            "value": 1
+                        },
+                        "value": 0.2
+                    },
+                    "tooltip": [
+                        { "field": "field",  "title": "Field of study" },
+                        { "field": "year",   "title": "Year" },
+                        { "field": "salary", "title": "Median salary ($)", "format": "$,.0f" },
+                        { "field": "change", "title": "Change 2023–2024 ($)", "format": "+$,.0f" }
+                    ]
+                }
+            },
+            {
+                "mark": {
+                    "type": "line",
+                    "strokeWidth": 12,
+                    "opacity": 0
+                },
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal" },
+                    "y": { "field": "salary", "type": "quantitative" },
+                    "detail": { "field": "field", "type": "nominal" },
+                    "tooltip": [
+                        { "field": "field",  "title": "Field of study" },
+                        { "field": "year",   "title": "Year" },
+                        { "field": "salary", "title": "Median salary ($)", "format": "$,.0f" },
+                        { "field": "change", "title": "Change 2023–2024 ($)", "format": "+$,.0f" }
+                    ]
+                }
+            },
+            {
+                "mark": {
+                    "type": "point",
+                    "filled": true,
+                    "size": 50
+                },
+                "encoding": {
+                    "x": { "field": "year", "type": "ordinal" },
+                    "y": { "field": "salary", "type": "quantitative" },
+                    "color": {
+                        "condition": {
+                            "test": "datum.change > 5000",
+                            "value": "#2166ac"
+                        },
+                        "value": "#aaaaaa"
+                    },
+                    "opacity": {
+                        "condition": {
+                            "param": "slopeHoverInteraction",
+                            "empty": false,
+                            "value": 1
+                        },
+                        "value": 0.2
+                    },
+                    "tooltip": [
+                        { "field": "field",  "title": "Field of study" },
+                        { "field": "year",   "title": "Year" },
+                        { "field": "salary", "title": "Median salary ($)", "format": "$,.0f" },
+                        { "field": "change", "title": "Change 2023–2024 ($)", "format": "+$,.0f" }
+                    ]
+                }
+            }
+        ]
+    };
+
+    vegaEmbed('#chartSlope', chartSlopeSpec, { actions: false });
+
+    const chart7spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Gender pay gap (male minus female median salary) by field of study, 2024",
+        "data": { "url": "chart7_gender_pay_gap.csv" },
+        "width": 570,
+        "height": 420,
+        "padding": { "left": 20 },
+        "layer": [
+            {
+                "mark": {
+                    "type": "bar",
+                    "cornerRadiusEnd": 3
+                },
+                "encoding": {
+                    "y": {
+                        "field": "field",
+                        "type": "nominal",
+                        "sort": { "field": "pay_gap_2024", "order": "descending" },
+                        "title": null,
+                        "axis": { "labelFontSize": 12 }
+                    },
+                    "x": {
+                        "field": "pay_gap_2024",
+                        "type": "quantitative",
+                        "title": "Pay gap: male minus female median salary ($)",
+                        "axis": {
+                            "labelFontSize": 11,
+                            "titleFontSize": 12,
+                            "format": "$,.0f"
+                        }
+                    },
+                    "color": {
+                        "condition": {
+                            "test": "datum.pay_gap_2024 > 0",
+                            "value": "#2166ac"
+                        },
+                        "value": "#d73027"
+                    },
+                    "tooltip": [
+                        { "field": "field",          "title": "Field of study" },
+                        { "field": "sal_male_2024",   "title": "Male median ($)",   "format": "$," },
+                        { "field": "sal_female_2024", "title": "Female median ($)", "format": "$," },
+                        { "field": "pay_gap_2024",    "title": "Gap ($)",           "format": "$," }
+                    ]
+                }
+            },
+            {
+                "mark": {
+                    "type": "rule",
+                    "color": "#333333",
+                    "strokeWidth": 1
+                },
+                "encoding": {
+                    "x": { "datum": 0 }
+                }
+            }
+        ]
+    };
+
+    vegaEmbed('#chart7', chart7spec, { actions: false });
+
+    const chart8spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "% of 25-49 year olds with bachelor degree or above by Australian state, 2025",
+        "width": 620,
+        "height": 420,
+        "padding": { "left": 20 },
+        "data": { "url": "chart8_map_bachelor_by_state.csv" },
+        "transform": [
+            {
+                "lookup": "state_full",
+                "from": {
+                    "data": {
+                        "url": "aus_states.topojson",
+                        "format": { "type": "topojson", "feature": "data" }
+                    },
+                    "key": "properties.STATE_NAME"
+                },
+                "as": "geo"
+            }
+        ],
+        "projection": { 
+            "type": "mercator",
+            "center": [134, -28],
+            "scale": 575
+        },
+        "mark": {
+            "type": "geoshape",
+            "stroke": "#ffffff",
+            "strokeWidth": 1.5
+        },
+        "encoding": {
+            "shape": {
+                "field": "geo",
+                "type": "geojson"
+            },
+            "color": {
+                "field": "pct_bachelor_plus_25_49",
+                "type": "quantitative",
+                "title": "% with bachelor+",
+                "scale": {
+                    "domain": [35, 60],
+                    "scheme": "blues"
+                },
+                "legend": {
+                    "orient": "bottom-right",
+                    "titleFontSize": 11,
+                    "labelFontSize": 10
+                }
+            },
+            "tooltip": [
+                { "field": "state_full", "title": "State" },
+                { "field": "pct_bachelor_plus_25_49", "title": "% with bachelor+", "format": ".1f" }
+            ]
+        }
+    };
+
+    vegaEmbed('#chart8', chart8spec, { actions: false });
+
+    const chart9spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Employment rate by qualification level, persons aged 15-74, Australia 2025",
+        "data": { "url": "chart9_employment_by_qualification.csv" },
+        "width": 620,
+        "height": 300,
+        "padding": { "left": 20 },
+        "layer": [
+            {
+                "mark": {
+                    "type": "bar",
+                    "color": "#eeeeee",
+                    "height": 2
+                },
+                "encoding": {
+                    "y": {
+                        "field": "level_short",
+                        "type": "nominal",
+                        "sort": ["Postgrad", "Grad Dip/Cert", "Bachelor", "Adv Dip/Diploma",
+                                "Cert III/IV", "Year 12", "Year 11", "Year 10"]
+                    },
+                    "x": {
+                        "field": "employed_pct",
+                        "type": "quantitative",
+                        "scale": { "domain": [0, 100] }
+                    }
+                }
+            },
+            {
+                "mark": {
+                    "type": "point",
+                    "filled": true,
+                    "size": 120,
+                    "color": "#2166ac"
+                },
+                "encoding": {
+                    "y": {
+                        "field": "level_short",
+                        "type": "nominal",
+                        "sort": ["Postgrad", "Grad Dip/Cert", "Bachelor", "Adv Dip/Diploma",
+                                "Cert III/IV", "Year 12", "Year 11", "Year 10"],
+                        "title": null,
+                        "axis": { "labelFontSize": 12 }
+                    },
+                    "x": {
+                        "field": "employed_pct",
+                        "type": "quantitative",
+                        "title": "Total employed (%)",
+                        "scale": { "domain": [0, 100] },
+                        "axis": { "labelFontSize": 11, "titleFontSize": 12 }
+                    },
+                    "tooltip": [
+                        { "field": "level_short", "title": "Qualification" },
+                        { "field": "employed_pct", "title": "Employed (%)", "format": ".1f" }
+                    ]
+                }
+            }
+        ]
+    };
+
+    vegaEmbed('#chart9', chart9spec, { actions: false });
+
+    const chart10spec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Reasons graduates work in jobs below their qualification level, 2024",
+        "data": { "url": "chart10_underemployment_reasons.csv" },
+        "width": 420,
+        "height": 320,
+        "padding": { "left": 20 },
+        "mark": {
+            "type": "bar",
+            "cornerRadiusEnd": 3
+        },
+        "encoding": {
+            "y": {
+                "field": "reason",
+                "type": "nominal",
+                "sort": "-x",
+                "title": null,
+                "axis": { "labelFontSize": 11, "labelLimit": 300 }
+            },
+            "x": {
+                "field": "pct_fte",
+                "type": "quantitative",
+                "title": "% of underemployed graduates citing this reason",
+                "axis": { "labelFontSize": 11, "titleFontSize": 12 }
+            },
+            "color": {
+                "field": "category",
+                "type": "nominal",
+                "scale": {
+                    "domain": ["Personal factors", "Labour market factors"],
+                    "range": ["#74add1", "#d73027", "#aaaaaa"]
+                },
+                "legend": {
+                    "title": "Category",
+                    "orient": "bottom",
+                    "titleFontSize": 11,
+                    "labelFontSize": 10
+                }
+            },
+            "tooltip": [
+                { "field": "reason",   "title": "Reason" },
+                { "field": "category", "title": "Category" },
+                { "field": "pct_fte",  "title": "% citing this", "format": ".1f" }
+            ]
+        }
+    };
+
+    vegaEmbed('#chart10', chart10spec, { actions: false });
+
+</script>
+
 </body>
 </html>
