@@ -1,14 +1,14 @@
 category,reason,pct_fte
-Other,Entry level job/career stepping stone,24.0
-Other,I'm satisfied with my current job,14.0
-Other,Not enough work experience,11.8
-Other,Changing jobs/careers,8.7
+Personal factors,Entry level job/career stepping stone,24
+Personal factors,I'm satisfied with my current job,14
+Personal factors,Not enough work experience,11.8
+Personal factors,Changing jobs/careers,8.7
 Labour market factors,No suitable jobs in my area of expertise,7.9
-Other,For financial reasons,6.8
-Other,No suitable jobs in my local area,6.5
+Personal factors,For financial reasons,6.8
+Labour market factors,No suitable jobs in my local area,6.5
 Personal factors,Studying,6.4
-Other,Considered to be too young by employers,2.3
-Other,Caring for children or family member,1.7
-Other,Travelling / gap year,1.4
-Other,I have skills that are not required in my current job,1.1
-Other,No jobs with a suitable number of hours,1.0
+Personal factors,Considered to be too young by employers,2.3
+Personal factors,Caring for children or family member,1.7
+Personal factors,Travelling / gap year,1.4
+Labour market factors,I have skills that are not required in my current job,1.1
+Labour market factors,No jobs with a suitable number of hours,1
