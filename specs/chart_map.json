@@ -1,0 +1,75 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "% of 25-49 year olds with bachelor degree or above by Australian state, 2025",
+  "width": 620,
+  "height": 420,
+  "padding": {
+    "left": 20
+  },
+  "data": {
+    "url": "chart8_map_bachelor_by_state.csv"
+  },
+  "transform": [
+    {
+      "lookup": "state_full",
+      "from": {
+        "data": {
+          "url": "aus_states.topojson",
+          "format": {
+            "type": "topojson",
+            "feature": "data"
+          }
+        },
+        "key": "properties.STATE_NAME"
+      },
+      "as": "geo"
+    }
+  ],
+  "projection": {
+    "type": "mercator",
+    "center": [
+      134,
+      -28
+    ],
+    "scale": 575
+  },
+  "mark": {
+    "type": "geoshape",
+    "stroke": "#ffffff",
+    "strokeWidth": 1.5
+  },
+  "encoding": {
+    "shape": {
+      "field": "geo",
+      "type": "geojson"
+    },
+    "color": {
+      "field": "pct_bachelor_plus_25_49",
+      "type": "quantitative",
+      "title": "% with bachelor+",
+      "scale": {
+        "domain": [
+          35,
+          60
+        ],
+        "scheme": "blues"
+      },
+      "legend": {
+        "orient": "bottom-right",
+        "titleFontSize": 11,
+        "labelFontSize": 10
+      }
+    },
+    "tooltip": [
+      {
+        "field": "state_full",
+        "title": "State"
+      },
+      {
+        "field": "pct_bachelor_plus_25_49",
+        "title": "% with bachelor+",
+        "format": ".1f"
+      }
+    ]
+  }
+}

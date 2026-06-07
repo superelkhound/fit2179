@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Part-time employment breakdown by field of study, 2024",
+  "data": {
+    "url": "chart4_parttime_by_field.csv"
+  },
+  "width": 560,
+  "height": 420,
+  "padding": {
+    "left": 20
+  },
+  "transform": [
+    {
+      "fold": [
+        "seeking_more_pct",
+        "satisfied_pt_pct"
+      ],
+      "as": [
+        "status",
+        "percentage"
+      ]
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "cornerRadiusEnd": 3
+  },
+  "encoding": {
+    "y": {
+      "field": "field",
+      "type": "nominal",
+      "sort": {
+        "field": "part_time_pct",
+        "order": "descending"
+      },
+      "title": null,
+      "axis": {
+        "labelFontSize": 12
+      }
+    },
+    "x": {
+      "field": "percentage",
+      "type": "quantitative",
+      "title": "% of employed graduates working part-time",
+      "axis": {
+        "labelFontSize": 11,
+        "titleFontSize": 12
+      }
+    },
+    "color": {
+      "field": "status",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "seeking_more_pct",
+          "satisfied_pt_pct"
+        ],
+        "range": [
+          "#d73027",
+          "#74add1"
+        ]
+      },
+      "legend": {
+        "title": null,
+        "labelExpr": "datum.value === 'seeking_more_pct' ? 'Seeking more hours' : 'Satisfied with part-time'",
+        "orient": "bottom"
+      }
+    },
+    "tooltip": [
+      {
+        "field": "field",
+        "title": "Field of study"
+      },
+      {
+        "field": "percentage",
+        "title": "% of employed",
+        "format": ".1f"
+      }
+    ]
+  }
+}

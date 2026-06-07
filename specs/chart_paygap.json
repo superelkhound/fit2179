@@ -1,0 +1,84 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Gender pay gap (male minus female median salary) by field of study, 2024",
+  "data": {
+    "url": "chart7_gender_pay_gap.csv"
+  },
+  "width": 570,
+  "height": 420,
+  "padding": {
+    "left": 20
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 3
+      },
+      "encoding": {
+        "y": {
+          "field": "field",
+          "type": "nominal",
+          "sort": {
+            "field": "pay_gap_2024",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "labelFontSize": 12
+          }
+        },
+        "x": {
+          "field": "pay_gap_2024",
+          "type": "quantitative",
+          "title": "Pay gap: male minus female median salary ($)",
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 12,
+            "format": "$,.0f"
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum.pay_gap_2024 > 0",
+            "value": "#2166ac"
+          },
+          "value": "#d73027"
+        },
+        "tooltip": [
+          {
+            "field": "field",
+            "title": "Field of study"
+          },
+          {
+            "field": "sal_male_2024",
+            "title": "Male median ($)",
+            "format": "$,"
+          },
+          {
+            "field": "sal_female_2024",
+            "title": "Female median ($)",
+            "format": "$,"
+          },
+          {
+            "field": "pay_gap_2024",
+            "title": "Gap ($)",
+            "format": "$,"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#333333",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "datum": 0
+        }
+      }
+    }
+  ]
+}

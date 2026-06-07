@@ -1,0 +1,72 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Reasons graduates work in jobs below their qualification level, 2024",
+  "data": {
+    "url": "chart10_underemployment_reasons.csv"
+  },
+  "width": 420,
+  "height": 320,
+  "padding": {
+    "left": 20
+  },
+  "mark": {
+    "type": "bar",
+    "cornerRadiusEnd": 3
+  },
+  "encoding": {
+    "y": {
+      "field": "reason",
+      "type": "nominal",
+      "sort": "-x",
+      "title": null,
+      "axis": {
+        "labelFontSize": 11,
+        "labelLimit": 300
+      }
+    },
+    "x": {
+      "field": "pct_fte",
+      "type": "quantitative",
+      "title": "% of underemployed graduates citing this reason",
+      "axis": {
+        "labelFontSize": 11,
+        "titleFontSize": 12
+      }
+    },
+    "color": {
+      "field": "category",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Personal factors",
+          "Labour market factors"
+        ],
+        "range": [
+          "#74add1",
+          "#d73027"
+        ]
+      },
+      "legend": {
+        "title": "Category",
+        "orient": "bottom",
+        "titleFontSize": 11,
+        "labelFontSize": 10
+      }
+    },
+    "tooltip": [
+      {
+        "field": "reason",
+        "title": "Reason"
+      },
+      {
+        "field": "category",
+        "title": "Category"
+      },
+      {
+        "field": "pct_fte",
+        "title": "% citing this",
+        "format": ".1f"
+      }
+    ]
+  }
+}

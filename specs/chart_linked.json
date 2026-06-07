@@ -1,0 +1,236 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Linked views: employment rate bar chart (with discipline filter) and bubble plot by field of study, 2024",
+  "params": [
+    {
+      "name": "groupFilter",
+      "value": "All",
+      "bind": {
+        "input": "select",
+        "options": [
+          "All",
+          "Health",
+          "Engineering & Technology",
+          "Business & Law",
+          "Arts & Humanities",
+          "Science & Environment",
+          "Education"
+        ],
+        "labels": [
+          "All fields",
+          "Health",
+          "Engineering & Technology",
+          "Business & Law",
+          "Arts & Humanities",
+          "Science & Environment",
+          "Education"
+        ],
+        "name": "Filter by discipline: "
+      }
+    }
+  ],
+  "hconcat": [
+    {
+      "width": 230,
+      "height": 480,
+      "data": {
+        "url": "chart1_employment_by_field.csv"
+      },
+      "params": [
+        {
+          "name": "fieldSelect",
+          "select": {
+            "type": "point",
+            "fields": [
+              "field"
+            ]
+          }
+        }
+      ],
+      "transform": [
+        {
+          "filter": "groupFilter == 'All' || datum.group == groupFilter"
+        }
+      ],
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 3
+      },
+      "encoding": {
+        "y": {
+          "field": "field",
+          "type": "nominal",
+          "sort": "-x",
+          "title": null,
+          "axis": {
+            "labelFontSize": 11
+          }
+        },
+        "x": {
+          "field": "fte_2024",
+          "type": "quantitative",
+          "title": "Full-time employment rate (%)",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ]
+          },
+          "axis": {
+            "labelFontSize": 10,
+            "titleFontSize": 11
+          }
+        },
+        "color": {
+          "condition": {
+            "param": "fieldSelect",
+            "value": "#2166ac"
+          },
+          "value": "#cccccc"
+        },
+        "tooltip": [
+          {
+            "field": "field",
+            "title": "Field of study"
+          },
+          {
+            "field": "group",
+            "title": "Discipline group"
+          },
+          {
+            "field": "fte_2024",
+            "title": "Full-time employed (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "width": 230,
+      "height": 480,
+      "data": {
+        "url": "chart3_scatter_salary_vs_employment.csv"
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0.85
+          },
+          "encoding": {
+            "x": {
+              "field": "employment_rate",
+              "type": "quantitative",
+              "title": "Full-time employment rate (%)",
+              "scale": {
+                "domain": [
+                  40,
+                  100
+                ]
+              },
+              "axis": {
+                "labelFontSize": 10,
+                "titleFontSize": 11
+              }
+            },
+            "y": {
+              "field": "median_salary",
+              "type": "quantitative",
+              "title": "Median annual salary ($)",
+              "scale": {
+                "domain": [
+                  55000,
+                  95000
+                ]
+              },
+              "axis": {
+                "labelFontSize": 10,
+                "titleFontSize": 11,
+                "format": "$,.0f"
+              }
+            },
+            "size": {
+              "field": "part_time_pct",
+              "type": "quantitative",
+              "title": "Part-time rate (%)",
+              "scale": {
+                "range": [
+                  50,
+                  1200
+                ]
+              },
+              "legend": {
+                "title": "Part-time rate (%)",
+                "titleFontSize": 10,
+                "labelFontSize": 9,
+                "orient": "none",
+                "legendX": 570,
+                "legendY": 150
+              }
+            },
+            "color": {
+              "condition": {
+                "param": "fieldSelect",
+                "value": "#2166ac"
+              },
+              "value": "#cccccc"
+            },
+            "tooltip": [
+              {
+                "field": "field",
+                "title": "Field of study"
+              },
+              {
+                "field": "employment_rate",
+                "title": "Full-time employed (%)",
+                "format": ".1f"
+              },
+              {
+                "field": "median_salary",
+                "title": "Median salary ($)",
+                "format": "$,.0f"
+              },
+              {
+                "field": "part_time_pct",
+                "title": "Part-time rate (%)",
+                "format": ".1f"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -14,
+            "fontSize": 10,
+            "color": "#333333",
+            "fontWeight": "bold"
+          },
+          "transform": [
+            {
+              "filter": {
+                "param": "fieldSelect",
+                "empty": false
+              }
+            }
+          ],
+          "encoding": {
+            "x": {
+              "field": "employment_rate",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "median_salary",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "field",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

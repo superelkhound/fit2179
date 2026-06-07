@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Employment rate by qualification level, persons aged 15-74, Australia 2025",
+  "data": {
+    "url": "chart9_employment_by_qualification.csv"
+  },
+  "width": 620,
+  "height": 300,
+  "padding": {
+    "left": 20
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "color": "#eeeeee",
+        "height": 2
+      },
+      "encoding": {
+        "y": {
+          "field": "level_short",
+          "type": "nominal",
+          "sort": [
+            "Postgrad",
+            "Grad Dip/Cert",
+            "Bachelor",
+            "Adv Dip/Diploma",
+            "Cert III/IV",
+            "Year 12",
+            "Year 11",
+            "Year 10"
+          ]
+        },
+        "x": {
+          "field": "employed_pct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 120,
+        "color": "#2166ac"
+      },
+      "encoding": {
+        "y": {
+          "field": "level_short",
+          "type": "nominal",
+          "sort": [
+            "Postgrad",
+            "Grad Dip/Cert",
+            "Bachelor",
+            "Adv Dip/Diploma",
+            "Cert III/IV",
+            "Year 12",
+            "Year 11",
+            "Year 10"
+          ],
+          "title": null,
+          "axis": {
+            "labelFontSize": 12
+          }
+        },
+        "x": {
+          "field": "employed_pct",
+          "type": "quantitative",
+          "title": "Total employed (%)",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ]
+          },
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 12
+          }
+        },
+        "tooltip": [
+          {
+            "field": "level_short",
+            "title": "Qualification"
+          },
+          {
+            "field": "employed_pct",
+            "title": "Employed (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    }
+  ]
+}

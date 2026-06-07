@@ -1,0 +1,192 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Slope graph: median graduate salary by field of study, 2023 vs 2024",
+  "data": {
+    "url": "chart_slope.csv"
+  },
+  "width": 300,
+  "height": 520,
+  "padding": {
+    "left": 20
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "slopeHoverInteraction",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "fields": [
+              "field"
+            ]
+          }
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "axis": {
+            "labelFontSize": 13,
+            "titleFontSize": 0,
+            "domain": false,
+            "ticks": false
+          }
+        },
+        "y": {
+          "field": "salary",
+          "type": "quantitative",
+          "title": "Median annual salary ($)",
+          "scale": {
+            "domain": [
+              50000,
+              110000
+            ]
+          },
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 12,
+            "format": "$,.0f"
+          }
+        },
+        "detail": {
+          "field": "field",
+          "type": "nominal"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.change > 5000",
+            "value": "#2166ac"
+          },
+          "value": "#aaaaaa"
+        },
+        "opacity": {
+          "condition": {
+            "param": "slopeHoverInteraction",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0.2
+        },
+        "tooltip": [
+          {
+            "field": "field",
+            "title": "Field of study"
+          },
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "salary",
+            "title": "Median salary ($)",
+            "format": "$,.0f"
+          },
+          {
+            "field": "change",
+            "title": "Change 2023\u20132024 ($)",
+            "format": "+$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 12,
+        "opacity": 0
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "salary",
+          "type": "quantitative"
+        },
+        "detail": {
+          "field": "field",
+          "type": "nominal"
+        },
+        "tooltip": [
+          {
+            "field": "field",
+            "title": "Field of study"
+          },
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "salary",
+            "title": "Median salary ($)",
+            "format": "$,.0f"
+          },
+          {
+            "field": "change",
+            "title": "Change 2023\u20132024 ($)",
+            "format": "+$,.0f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 50
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "salary",
+          "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.change > 5000",
+            "value": "#2166ac"
+          },
+          "value": "#aaaaaa"
+        },
+        "opacity": {
+          "condition": {
+            "param": "slopeHoverInteraction",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0.2
+        },
+        "tooltip": [
+          {
+            "field": "field",
+            "title": "Field of study"
+          },
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "salary",
+            "title": "Median salary ($)",
+            "format": "$,.0f"
+          },
+          {
+            "field": "change",
+            "title": "Change 2023\u20132024 ($)",
+            "format": "+$,.0f"
+          }
+        ]
+      }
+    }
+  ]
+}

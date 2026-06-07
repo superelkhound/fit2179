@@ -1,0 +1,83 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Heatmap of normalised graduate outcomes by field of study, 2024",
+  "data": {
+    "url": "chart_heatmap.csv"
+  },
+  "width": 620,
+  "height": 420,
+  "padding": {
+    "left": 20
+  },
+  "mark": {
+    "type": "rect"
+  },
+  "encoding": {
+    "y": {
+      "field": "field",
+      "type": "nominal",
+      "sort": {
+        "field": "norm_value",
+        "op": "mean",
+        "order": "descending"
+      },
+      "title": null,
+      "axis": {
+        "labelFontSize": 11
+      }
+    },
+    "x": {
+      "field": "metric",
+      "type": "nominal",
+      "title": null,
+      "axis": {
+        "labelFontSize": 11,
+        "labelAngle": -20
+      },
+      "sort": [
+        "Employment rate",
+        "Median salary",
+        "Part-time rate (inv.)",
+        "Gender pay gap"
+      ]
+    },
+    "color": {
+      "field": "norm_value",
+      "type": "quantitative",
+      "title": "Score (0\u20131)",
+      "scale": {
+        "domain": [
+          0,
+          1
+        ],
+        "scheme": "blues"
+      },
+      "legend": {
+        "orient": "bottom",
+        "titleFontSize": 11,
+        "labelFontSize": 10,
+        "gradientLength": 200
+      }
+    },
+    "tooltip": [
+      {
+        "field": "field",
+        "title": "Field of study"
+      },
+      {
+        "field": "metric",
+        "title": "Metric"
+      },
+      {
+        "field": "raw_value",
+        "title": "Raw value",
+        "format": ",.0f"
+      },
+      {
+        "field": "norm_value",
+        "title": "Normalised score",
+        "format": ".2f"
+      }
+    ]
+  }
+}

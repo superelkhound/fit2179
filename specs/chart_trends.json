@@ -1,0 +1,120 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Graduate employment rate and median salary trends 2022-2024",
+  "data": {
+    "url": "chart5_trends.csv"
+  },
+  "width": 620,
+  "height": 320,
+  "padding": {
+    "left": 20
+  },
+  "resolve": {
+    "scale": {
+      "y": "independent"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": {
+          "filled": true,
+          "size": 80
+        },
+        "strokeWidth": 2.5,
+        "color": "#2166ac"
+      },
+      "encoding": {
+        "x": {
+          "field": "year_label",
+          "type": "ordinal",
+          "title": "Survey year",
+          "axis": {
+            "labelFontSize": 12,
+            "titleFontSize": 12
+          }
+        },
+        "y": {
+          "field": "fte",
+          "type": "quantitative",
+          "title": "Full-time employment rate (%)",
+          "scale": {
+            "domain": [
+              70,
+              85
+            ]
+          },
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 11,
+            "titleColor": "#2166ac",
+            "format": ".1f",
+            "tickCount": 4
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year_label",
+            "title": "Year"
+          },
+          {
+            "field": "fte",
+            "title": "Full-time employed (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "point": {
+          "filled": true,
+          "size": 80
+        },
+        "strokeWidth": 2.5,
+        "color": "#d73027",
+        "strokeDash": [
+          4,
+          2
+        ]
+      },
+      "encoding": {
+        "x": {
+          "field": "year_label",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "median_salary",
+          "type": "quantitative",
+          "title": "Median salary ($)",
+          "scale": {
+            "domain": [
+              60000,
+              80000
+            ]
+          },
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 11,
+            "titleColor": "#d73027",
+            "format": "$,.0f",
+            "tickCount": 4
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year_label",
+            "title": "Year"
+          },
+          {
+            "field": "median_salary",
+            "title": "Median salary ($)",
+            "format": "$,"
+          }
+        ]
+      }
+    }
+  ]
+}
